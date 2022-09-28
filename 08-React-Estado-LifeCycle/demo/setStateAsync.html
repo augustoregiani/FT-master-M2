@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Henry - Demo LifeCycle</title>
+</head>
+<body>
+  <div id='app'></div>
+
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+  
+  class StateContador extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state={contador:0} //aca directamente recibe un valor, no lo declaro antes.
+        this.clickOne= this.clickOne.bind(this);
+        this.clickTwo=this.clickTwo.bind(this);
+        this.clickthree=this.clickthree.bind(this);
+    }
+  
+
+
+    clickOne(){ //Primer forma de modificar el ESTADO.
+        this.setState({ //=> set State es la propiedad que sabe cambiar el estado
+            contador:this.state.contador+1 //al setstate le paso un OBJETo, con la pripiedad del estado que quiero cambiar
+        });
+        /*this.setState({
+            contador: this.state.contador +1
+        })*/
+        console.log('sin callback: ', this.state.contador)
+//------> Con esta lo que me va a pasar es que el SetState tiene un pequeño retraso, en pantalla cuando clickee me va a mostrar 1, pero
+//       en consola me va a mostrar Cero.
+//EXPLICACION: El setState tarda 1 segundo en mostrar valores, por eso primero antes de tirar el resultado, me consologea el valor, sin sumarle el 1.
+//         y por eso empieza en cero en la consola.
+    }
+
+    clickTwo(){ //2nda manera
+     this.setState({
+        contador: this.state.contador +1  // hasta aca lo mismo que click one, le paso un objeto con la pripiedad que quiero cambiar.
+    }, function(){                        //como 2ndo parametro, le paso una funcion con un callback que me manda el console.log.
+        console.log ('con Callback: ', this.state.contador) // dentro del callback hace el console.log
+     }); //le paso un callback como 2ndo parametro al setState
+    }
+//----------> Agregandole una funcion Callbackk al console.log, el SetState se mueve en sincronia, en pantalla muestra 1, y en consola tambien muestra 1
+// EXPLICACION: estoy pasandole 2 argumentos al setstate, entonces primero modifica el estado, y cuando termina, ejecuta la funcon de callback que le pase como segundo parametro
+//             entonces en este caso se van a ejecutar en ORDEN.
+    clickthree(){
+        this.setState(state => { //LE PASO UNA funcion de callback, que recibe como argumento el valor actual del estado (Osea en state *nnota* le puedo poner cualquier nombre, pero state es el indicado por que es el valor de referencia que me viene.)
+            return {                     //DENTRO DE LAS Instrucciones le digo que me retorne, un objeto, con el valor que quiero modificar del ESTADO.
+                contador: state.contador +1  
+            }
+//EXPLIACION: cuando yo haga click y ejecute Click three. cuando llamo a  this.setState  va a ejecutar la funcion que tiene adentro, entonces la funcion que tiene adentro toma 
+//como parametro el valor actual del estado (state) y lo modifica.
+        });
+         //Este segundo set state, me va a generar que se sume de a 2.,por que va a tomar el valor en 1 que genero el primer setState
+         //En este setState voy a agregar DATITOS.
+        this.setState(state => {  //aca hace return, por que es una arrow funtion. Si abro llaves, siempre tengo que poner un return
+            return {              //ademas, estoy retornando un OBJETO, por lo que van las llaves y un return (NO puedo poner un objeto en 1 sola linea.)
+                contador: state.contador +1  // osea, para poner return, tengo que poner {}. en una sola linea seria {contador:state.contador +1}, esto ultimo es un objeto, si lo pongo en 1 sola linea, me toma esas llaves como la llaves de una funcion y no como las llaves de un objeto.
+            }
+        });
+    }
+
+    render(){
+        return (
+            <div>
+                <p>{this.state.contador}</p>
+                <button onClick={this.clickOne}>CLICK ONE</button>
+                <button onClick={this.clickTwo}>CLICK TWO</button>
+                <button onClick={this.clickthree}>CLICK THREE</button>  
+            </div>
+        )
+    }
+};
+  ReactDOM.render(<StateContador/>, document.getElementById('app'));
+  </script>
+</body>
+</html>
+<!-- {this.state.contador < 3 ? <Numero numero={this.state.contador} /> : null} -->

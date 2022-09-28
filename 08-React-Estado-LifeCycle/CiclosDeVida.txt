@@ -1,0 +1,50 @@
+-------------------------------CICLOS DE VIDA----------------------------------
+
+basicamente, se puede comparar con el ciclo de vida de una persona.
+
+MONTAJE/ACTUALIZACION/DESMONTAJE
+
+en un componente el MONTAJE, se puede comparar con el nacimiento, es el momento en el cual el componente se muestra
+en pantalle, osea se MONTA.
+
+La ACTUALIZACION, se compara con la adolecencia, onda te actualizas. En el componente este ciclo va a ser cuando
+se actualice una prop.
+
+DESMONTAJE, es cuando se deja de ver en pantalla.
+
+
+     MONTAJE                   |       ACTUALIZACION             |       DESMONTAJE
+    se ejecuta:                |        se ejecuta               |
+----constructor-------         |                                 |
+------------------RENDER-------|----------RENDERIZA-------       |
+---componentDidMount---        |      -componentDidUpDate--      |  ---componentWillUnmount---
+
+
+componentDidMount=> se ejecuta| componentDidUpDate=> se ejecuta  | componentWillUnmount=> 1mlseg antes
+1mlseg despues de que se MONTA| 1 msg despues de que se RENDERIZA| de que se deje de ver en pantalla el 
+el componente                 | el componente                    |componente, se ejecuta.
+(SE MONTO EL COMPONENTE)        (SE ACTUALIZO EL COMPONENTE)      (SE VA A DESMONTAR EL COMPONENTE)
+
+
+INDEX.LIFECYCLE
+
+lo importante es que con estas funciones me sirven para hacer algo, en determinado momento del cliclo de vida del 
+componetente, osea voy a tener 3 acciones. 
+
+ejemplo:
+cuando se monta un componente, quiero ir a una appi a buscar, ciertos datos. En ese caso lo pongo en el componentDidMount
+Entonces el componente se MONTA, va a buscar los datos a la APPI, y los trae
+despues con el componentDidMount, trabajo eso que traje
+por ultimo con el componentWillUnmount, TERMINO la ejecucion de las cosas que ya no necesito para no consumir recursos.
+
+________________________________________________________________________________________________________________
+
+ONE WAY DATA FLOW
+
+________________________________________________________________________________________________________________
+
+Hooks-> es la sintaxis de funciones.
+useSTATE->
+
+24a mati bonatiqui
+16a otro waso

@@ -1,0 +1,268 @@
+--->> Componentes Presentacionales:
+
+Proposito: Nos muestran como se ven las cosas, (markup, stilos, etc) no tienen  funcionalidad. En nuestra api del clima por ejemplo
+           seria el componente CARD.
+
+Sabe de redux: No, solo recibe informacion mediante props.
+
+para lleer datos: Lee props+
+
+cambia datos: Invoca a los callbacks de sus 
+
+
+--->> Componentes Containers:
+
+Proposito: Separa los problemas de logica de lo presentacional, por ende tiene toda la logic. Trae datos, los modifica, hace llamados a APIIS, pasa info a sus hijos (que por lo general son componentes presentacionales) etc
+
+Sabe de Redux: Si, obiente la info que necesita del Store.
+
+para leer datos: Se suscribe a los estados de Redux
+
+PARA CAMBIAR DATOS:  Envia acciones a REDUX
+
+
+---------------------------------------------------------------------------------------------------------
+ COMO CONECTAMOS NUESTROS COMPONENTES A REDUX'???
+
+Para los componentes DE CLASE: se usa -->
+
+29))-- mapStateToProps -- es un metodo que recibe el estado de la aplicacion, lo mapea y le pasa las Props a React.
+
+-- mapDistpatchToProps --  el otro metodo que se usa, y que recibe los metodos dispatch y retorna callbacks con las props que vamos a poder pasarle a los componentes presentacionales.
+
+
+
+Para los componenes FUNCIONALES, existen HOOKS que conectan las cosas. Pero es tema de mañana.
+
+----------------------------------------------------------------------------------------------------------
+****ANALIZANDO LA DEMO.SUBSCRIBE****
+
+
+
+
+/////////////////////////////1 PASO) Crear el STORE ('store.js')
+                    ______________________________________________________________________________________________________________
+                   | import { createStore } from 'redux';
+                   | import rootReducer from './reducers';
+                   | import reducer323 from 'reducer/reducers.2
+                   |
+                49 | ---> const store = createStore(rootReducer,
+                   |         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+                   |         );
+                   |
+                   | export default store;
+                   | ______________________________________________________________________________________________________________
+
+Aca se guarda el stado de redux-- 
+Importamos el create store, y el root Reducer
+
+SI TUVIERA MAS DE UN REDUCER: 
+En la linea --->  **const store = createStore() ** agrego el medotodo CONBINEREDUCERS y pongo entre {} a todos los reducers juntos.
+
+                  49--> const store = createStore(conbineReducers({rootReducers, reducers2, reducers345}) ....)
+
+esta linea es la que me permite tener conectada el DEVTOOLS de redux en el Browser
+window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+
+////////////////////////////////2NDO Paso)  ('app.js')
+
+Primero que nada, tener en cuenta que se debe instalar la conbineta React-Redux
+segundo e importante es importar el metodo Provider(' import  { Provider } from 'react-redux';')
+este es un metodo  que genera un componente de ORDEN SUPERIOR (osea que envuelve toda la aplicacion) 
+
+  ______________________________________________________________________________________________________________
+                |import React from 'react';
+                |import { render } from 'react-dom';
+                |import Counter from './src/components/Counter.jsx';
+                |import  { Provider } from 'react-redux';   -----> ES EL COMPONENTE DE ORDEN SUPERIOR QUE ME PERMITE ACCEDER AL
+                |import store from './src/store.js';|               STORE
+                |
+                |  render(
+                |      <Provider store={store}> --> provider accediendo al Store.(osea pueden leerlo. pero igual deben suscribirse)
+                |            <div>
+                |                <Counter/>
+                |                <Counter/>
+                |                <Counter/> 
+                |                <Counter/>
+                |            </div>
+                |       </Provider>,
+                |   document.getElementById('app')
+                |   );
+                |
+                | ______________________________________________________________________________________________________________
+
+///////////////////////////////3ER PASO:
+Crear las carpetas de : ---> REDUCERS
+                        ---> ACTIONS
+
+        1)crear y configurar las funciones que crean las acciones (actions-creators)
+                                        ______________________________________
+                                        | export function increment() {
+                                        |  return {
+        ACTION CREATOR -->              |    type: 'INCREMENT',
+                                        |    peyload: 1
+                                        |  }
+                                        |};
+                                        _________________________________________
+
+       2) Crear el REDUCER con el STATE incial 
+                                ___________________________________________________
+                                |   const initialState = {
+                                |    count: 0,
+                                |    data: {  },
+                                |    amigos: [],   }
+                                |
+                                |  export default (state = initialState, action) => {   -----> El state incial se exporta, 
+                                |    switch (action.type) {                                     y se importa en el Store
+                                |      case 'INCREMENT':
+           REDUCER-->           |        return {
+                                |           ...state,
+                                |           count: state.count + 1,
+                                |      }
+                                |      case 'DECREMENT':
+                                |        return {
+                                |           ...state,
+                                |           count: state.count - 1,
+                                |      }
+                                |      default:
+                                |        return {...state} }}
+                                ______________________________________________________
+
+
+///////////////////////////////4rto PASO:   Se comienza a Trabajar con los componentes.
+
+ejemplo de la demo es COUNTER.JSX
+
+
+| 1)  import store from '../store.js';  ---> Se trae el store, con los metodos  Distpach, suscribe, getState
+
+IMPORTANTE:
+ function mapStateToProps(state) --> Me mapea los estados del redux  --->***LINEA 29)***
+
+ Connect ---> es el metodo que me va a convertir todo en props. 
+   1) todo lo mapeado por mapStateToProps -  (osea el stado que viene del reducer)
+   2) me convierte en props las Actions function que importo en la liea *F*
+______________________________________________________________________________________________
+        |import React, { Component } from 'react';
+        |
+  *F*-->|import {increment, decrement, reset} from '../actions/index.js'
+        |
+*PP*--> |import { connect } from 'react-redux';
+        |
+        |
+        |class Counter extends Component {
+        | render() {
+        |   return (
+        |     <p>
+        |       Clicked: {this.props.count} times
+        |       <button onClick={this.props.increment}>
+        |         +
+        |       </button>
+        |       <button onClick={this.props.decrement}>
+        |         -
+        |       </button>
+        |       <button onClick={this.props.reset}>
+        |         Reset
+        |       </button>
+        |     </p>
+        |   )
+        | }
+        |}
+        |
+        |function mapStateToProps(state) {     /-> esta es la funcion que tenemos que crear para mapear el stado y 
+        |  return {                             //  poder generarlo como props.
+        |    count: state.count,
+        |    data: state.data,
+        |    amigos: state.amigos,
+        |  };
+        |}
+        |
+   PP-> |  export default connect(             //import { connect } from 'react-redux'; me conecta react con redux, y me genera las 
+        |    mapStateToProps,                  //subscriocciones
+   *F*->|   {increment, decrement, reset}      // --> esta funcion mapea los estados y los comvierte en props
+        |    )(Counter);                      ///--- > El CONNECT me trae las ACTIONS, y tambien me las comvierte en props, y las manda directo
+        <!-- |                                      //al componente para usarlas como propos ej (//<button onClick={this.props.increment}) --> es muy muy impornatn 
+                                              //poner a un lado el nombre del componente al cual queremos conectar
+                                             //que en este caso es--->>>    class **"Counter"** extends Component {}
+     
+        ___________________________________________________________________________________________________________________________________
+
+/////////////////////////////////// FORMAS DE HACER LA CONECCION.
+
+1) EL mapStateToProps ---> va siempre igual, me mapea y trae lo valores del estado y genera la props.
+
+2 LA CONCEXION SE PUEDE HACER DE 2 FORMAS;
+
+****PRIMER FORMA:
+__________________________________________________________________________________
+| export default connect( mapStateToProps,{increment, decrement, reset})(Counter);     ---> aca conecto todo, los reduces (mapstateprops), las actions {increment,
+                                                                                    //  decrement, reset} , y el componente (counter)
+_________________________________________________________________________________  
+
+
+
+
+*****SEGUNDA FORMA: es sin distructuring, por lo que defino las funciones dentro de mapDispatch To Props (distpacth)
+__________________________________________________________________________________
+       function mapStateToProps(state) {     /-> esta es la funcion que tenemos que crear para mapear el stado y 
+        |  return {                             //  poder generarlo como props.
+        |    count: state.count,
+        |    data: state.data,
+        |    amigos: state.amigos,
+        |  };
+       
+        function mapDispatchToProps(dispatch) {  ---> recibe el metodo despatch apra poder usarlo
+            return {
+              increment: function() {
+                 dispatch(increment());
+                 },
+              decrement: function() {
+                 dispatch(decrement())
+                },
+              reset: function() {
+                  dispatch(reset());
+                },
+              }
+            }
+
+        
+        export default connect( mapStateToProps, mapDispatchToProps)(Counter);
+_________________________________________________________________________________ 
+
+*** DIFERENCIAS : una usa destructuring y la otra no. EEEEAAAASYYYY BRO
+
+
+******* TERCERA FORMA:
+//  - Solo modificaremos el mapDispatchToProps para traer todas las actions
+//  creators de una sin tener que especificar una por una. Para ello utilizaremos
+//  el método bindActionCreators de 'redux'
+
+________________________________________________________________________________
+              import React , {component} from 'react';
+              import * as actionCreators from /../actions/index.js' ---> me importa TOOODOS los actions creatorsm vajo el mismo nombre 
+  **242/-->   import {bindActionCreatos} from 'redux'  ---> es el metodo de redux que me va a permidir bindear y despachar todas las fuanciones de uan
+              import { connect } from 'react-redux';
+            
+            function mapStateToProps(state) {     /-> esta es la funcion que tenemos que crear para mapear el stado y 
+                    |  return {                             //  poder generarlo como props.
+                    |    count: state.count,
+                    |     data: state.data,
+                    |    amigos: state.amigos,
+                    |  };
+                    
+            function mapDispatchToProps(dispatch) {
+      *242/->    return bindActionCreators(actionCreators, dispatch);  ---> CON ESTA FALOPA TRAEMOS TODAS LAS ACTIONS
+            }
+
+            export default connect(
+               mapStateToProps,     ---> este se mantiene como siemrpre
+               mapDispatchToProps    .---> este es el nuevo
+               )(Counter);
+__________________________________________________________________________________________________________________________
+
+
+       
+  DEMO MUTATIONN
+
+
+  ____________________________________________________________________________________________________________________________

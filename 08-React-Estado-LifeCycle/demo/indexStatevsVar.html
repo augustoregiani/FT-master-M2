@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8"/>
+  <title>Henry - State vs Var</title>
+</head>
+
+<body>
+  <div id='app'></div>
+
+  <script crossorigin src="https://unpkg.com/react@16.8/umd/react.development.js" ></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16.8/umd/react-dom.development.js" ></script>
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  <script type="text/babel">
+
+ class StateContador extends React.Component{
+   constructor(props) {
+     super(props);
+     this.state = { 
+       contador: this.props.contador //valor inicial va a ser Cero.
+      }
+      this.variable = this.props.contador //DEFINO una variable dentro del constructor. Con el valor del contador (cero)
+      this.incrementoContador= this.incrementoContador.bind(this); //aca Bindea la funcion del renglon 34, IncrementoContador.
+    }                                                             //Siempre que voy a laburar fuera del constructor tengo que bindear el THIS.
+    
+    onButtonClick = () => {          //
+      this.setState((state) => {     // aca lo que hago es agarrar STATE, y su propiedad contador, y le suma 1
+          return {contador: state.contador + 1} //esta funcion no la bindea, Por que tiene => que bindea en automatico AL CONTEXTO donde esta definida, 
+     });                                        //y THIS, esta definida adentro del COMPONENTE STATECONTADOR (raw 17)
+      console.log("Actualicé mi state :", this.state.contador) // si uso Arrow funtion, no necesito el bind de la raw 24
+    }
+    
+    incrementoContador(cuento) {//ESTA COMO es una variable, no la reenderiza, hasta que cambie el estado. Por eso usamos estados. y no variables, osea que esto no va. lpm
+     this.variable++       //ESTA es la variable que definimos en raw 23.                          
+      console.log("Soy contador ", this.variable)//para esta funcion bindie en la raw 24, por que no tiene arrow, es una funcion normal
+    }
+    
+    render(){
+      return (
+        <div>          
+          <h1>State vs Variable Contador</h1>
+          <div><button onClick={this.onButtonClick}>Suma uno!</button>
+            &nbsp;Hola, soy el State {this.state.contador}!!
+            </div>
+            <div>
+            <p>Variable contador: {this.variable}</p>
+            <button onClick={this.incrementoContador}>Incrementa!</button>  
+            </div>
+            </div>
+            )
+    }
+  };
+
+  ReactDOM.render(<StateContador contador={0} />, document.getElementById('app'));
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Henry - Demo Bind con Arrow Function</title>
+</head>
+<body>
+  <div id='app'></div>
+
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+
+  class BindArrowFunction extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        mensaje: this.props.mensaje
+      }
+    }
+   //EN este ejemplo, como este haciendo todos los metodos con Arrow Fuction, no tiene que hacer el BIND dentro
+   // del constructor.
+    handleClick = () =>{
+        alert(this.state.mensaje)
+    }
+
+    handleChange = (e) => {   //PARTICULAIDAD: handleChange, recive un parametro (e)-event-, este parametro va a ser un evento, 
+      this.setState({                   // el evento que recibe viene  del metodo OnChange (row 43aprx), este eventListen lo que hace es 
+        mensaje: e.target.value        //detectar cambios en un IMPUT. (cuando escribo en el cuadro de texto)
+      })                              // ESTA FUNCION, recibe el evento onchenge, y le asigna a el ESTADO "mensaje" (definido en raw 19)
+    }                                // e.target.value => e target, es el elemento que disparo el evento. Que bien va a ser el imput
+                          // declarado en la raw 43apx (Osea cuando escribo) => ahora bien si me paro en el imput (o target que disparo el evento)
+                          //y accedo a .value, accedo a lo que sea que se haya ESCRITO EN EL IMPUT, entonces le asigno a MENSAJE el valor de lo que
+                          // que escribo en el evento. ENTONCES STATE, va a tomar el valor de lo que escribo en el imput
+
+
+//EXPLICACION DEL IMPUT raw42>>> Entonces estoy escribiendo y capturando el valor. CCOMO LO HICIMOS¡?
+//Agarramos imput, y cuando este cambie, el onChange dispara el HAandleChange, QUIEN CAPTURA al evento, y me guarda dentro de mi ESTADO lo que sea que esta escribiendo el usuario.
+//Por ultimo, cuando haga Click en HandleClick, me va a devolver un Alert, con el Estado, osea el mensaje, osea lo que escribio el Usuario en el imput
+  
+    render() {                   
+        return (
+            <div>
+                <h1>Bind usando Arrow Function</h1>
+                <input type="text" name="message" placeholder="Ingresa mensaje" onChange={this.handleChange} />
+                <button onClick={this.handleClick}>Clickéame</button>
+            </div>    
+        );
+    }
+  };
+  ReactDOM.render(<BindArrowFunction mensaje="" />, document.getElementById('app'));
+  </script>
+</body>
+</html>

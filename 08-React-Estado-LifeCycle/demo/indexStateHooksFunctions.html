@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8"/>
+  <title>Henry - useState Function update vs value update</title>
+</head>
+
+<body>
+  <div id='app'></div>
+
+  <script src="https://unpkg.com/react@16.8/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16.8/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+
+  <script type="text/babel">
+  const { useState, useEffect } = React; //ACA IMPORTO 2 COMPONENTES 
+ 
+  function Contador(props) {
+    const [contador, setContador] = useState(props.contador);
+    //1)hago destructurin de un array, por ede la ejecucion de useState devuelve un arreglo. El valor de useSTATE, 
+    //props.contador.
+    // en const [contador, setContador] el primer valor "contador", es el ESTADO, y el segundo es "setContador" la funcion qe
+    //MODIFICA al estado.
+    //Por ende, contador (el estado) adquiere el valorde props.contador.
+    //OTRO ESTADO ejemplo
+    //const [nombre, setNombre] = useState("hola") => el valor inicial del ESTADO "nombre" es HOLA, y si quiero cambiar
+    //el estado de nombre, lo hago con el SetNombre.
+    let varContador = 100;
+
+    let incrementarValue = () => { //esta funcion agarra mi estado y le suma 1, easy
+      setContador(contador + 1)   //Si clickeo el segundo boton (Suma dos?) va a sumar de a 1. Por que sigue con el diley
+      setContador(contador + 1)   // de la funcion setNombre = equivalente a setState (en setStateAsync.html)
+    }
+
+    const incrementarFunction = () =>{ //esta funcion tiene arrow funtion, por lo que con prevState, agarra el valor previo del estado
+      setContador((prevState) => prevState + 1)    //y le suma 1.
+      setContador((prevState) => prevState + 1)   // Este por ente, al tener una arrow function, no va a tener Diley, por lo que si aprieto el boton
+    }                                           //(Suma dos!), efectivamente va a sumar de a dos. por que recibe el valor previo del estado y lo suma No se que da esperando...
+
+    return (
+      <div>
+        <h1>useState Function update vs value update</h1>
+        <div>
+          <button onClick={incrementarFunction}>Suma dos!</button>
+        </div>
+        <div>
+          <button onClick={incrementarValue}>Suma dos?</button>
+        </div>
+        &nbsp;Hola, soy el State {contador}!!
+  
+      </div>
+    )
+  };
+
+  ReactDOM.render(<Contador contador={100} />, document.getElementById('app'));
+  </script>
+</body>
+
+</html>

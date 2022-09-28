@@ -1,0 +1,11 @@
+const INCREMENTO = 'INCREMENTO';
+const DECREMENTO = 'DECREMENTO';
+const ASYNC= 'ASYNC';
+const INPAR= 'INPAR';
+
+module.exports = {
+  INCREMENTO,
+  DECREMENTO,
+  ASYNC,
+  INPAR
+}

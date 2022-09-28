@@ -1,0 +1,58 @@
+
+.bet2{
+    background-color: red;
+}
+.btn {
+    align-content: flex-end;
+    background-color: red;
+    border-radius: 5px;
+    border-color: red;
+    text-align: center;
+    width: 30px;
+    align-self: flex-end;
+    border-width: 3px;
+}
+
+.btnColor{
+    color: white;
+}
+
+.btn:hover{
+    color:white;
+    
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    align-content: center;
+    border: 2px solid rgb(120, 57, 57);
+    /* background-color: rgb(255, 127, 127); */
+    border-radius: 10px;
+    height: 200px;    
+    }
+
+    
+.middleDiv{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    text-align: center;
+    
+ }
+
+ .middleDiv p{
+    margin-top: 15px;
+ }
+
+
+.titulo{
+    display: flex;
+    justify-content: center;
+}
+
+.imagen{
+    grid-column: 3/4;
+    grid-row: 1/3;
+}

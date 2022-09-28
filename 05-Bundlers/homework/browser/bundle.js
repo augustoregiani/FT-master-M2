@@ -1,0 +1,1 @@
+(()=>{var o=ioSocket(window.location.origin);o.on("connect",(function(){console.log("Connected!")})),o.on("load",(function(o){o.forEach((function(o){var n=o.start,t=o.end,a=o.color;whiteboard.draw(n,t,a,!1)}))})),o.on("draw",(function(o,n,t){whiteboard.draw(o,n,t,!1)})),whiteboard.on("draw",(function(n,t,a){o.emit("draw",n,t,a)}))})();

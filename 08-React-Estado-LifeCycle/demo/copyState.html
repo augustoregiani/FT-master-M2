@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Henry - Demo State</title>
+</head>
+<body>
+  <div id='app'></div>
+
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+
+    class Children extends React.Component { //CLASS [Nombre del componente] que hereda {extends} de Reac.Component
+      constructor(props) { 
+        super(props); 
+        this.state = { //creo el estado
+          title: this.props.title //El valor inicial de este estado es lo que me pasen como prop.title (que creo es...) es henry linea 36
+        };
+      }
+
+      render(){                          //children me va a renderizar un H2, que me va a mostrar el valor del estado.
+        return (                      
+          <div>                           
+            <h2>{this.state.title}</h2> 
+          </div>
+        )
+      }
+    };
+    // LINEA 26===>  <h2>{this.prop.title}</h2>
+    //si quiero cambiar el stado del children puedo pasarle props, en lugar de states.
+    //El punto es,  no necesariamente hay que guardar todo en estados. Si yo recibo un valor y lo unico que quiero ahcer es mostrarlo
+    //no tiene sentido que lo guarde en un stado, que me lo den como prop y lo muestro. EASY DHEEAAA.
+    //Lo ideal del estado es guardar un valor que luego internaente el componente necesite manipular y/o MODIFICAR
+    //EN ESTADO VOY A GUARDAR COSITAS que necesite modificar, y que cuando eso suceda haga una renderizacion
+    //como el ejemplo del contador (SetStateAsync.html) se guardaba el numero que le pasaba en el Estado, pero porque luego cuando  hacia click en un boton necesitaba trabajar con el y modificarlo
+    //sumandole 1, y que se reenderize. 
+    //en este ejemplo de ahora no necesito eso. Simplemente recibo un numero y lo muestro.
+
+
+   
+
+  class App extends React.Component {      //ES EL PADRE DE CHILDREN
+    constructor(props) {
+      super(props);
+      this.state = {
+        title: 'Henry'
+      };
+      this.onButtonClick = this.onButtonClick.bind(this);  //aca esta bindiando el metodo, para poder usarlo con this en onButtonClick.
+    } 
+
+    onButtonClick() {
+      this.setState({
+        title: this.state.title === "Henry" ? "Franco" : "Henry" //Este metodo modifica el estado con un ternario. y pregunta, 
+      });                                                   //si titulo es = a henry,(?) que ponga franco. Sino (:) (osea si es franco) que ponga Henry
+    }
+
+
+
+    // Render=>
+    //retorna un H1, donde nombra como PADRE(FATHER) un title, y muestra el valor del ESTADO DE APP
+    //DESPUES, renderiza el componente CHILDREN, y le pasa como title, el estado de la APP
+    //renderiza un botton, que ejecuta la funcion que va a ir cambiando el estado de App (this.onButtonClick.)
+    render(){
+      return (
+        <div>
+          <h1>DEMO - Father title: {this.state.title}</h1> 
+          <Children title={this.state.title} />          
+          <button onClick={this.onButtonClick}>Click me!</button>
+        </div>
+      )
+    }
+  };
+
+  ReactDOM.render(<App />, document.getElementById('app'));
+  </script>
+</body>
+</html>

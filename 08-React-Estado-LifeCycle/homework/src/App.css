@@ -1,0 +1,12 @@
+.App {
+  text-align: center;
+  background-image: url('https://static3.burgosconecta.es/www/multimedia/202002/14/media/cortadas/cieloazul1-k1zG-U100155473657HzH-984x608@RC.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}

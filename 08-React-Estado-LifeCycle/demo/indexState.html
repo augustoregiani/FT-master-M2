@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=UTF-8>
+  <title></title>
+</head>
+
+<body>
+  <div id='app'></div>
+
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+
+    class Contador extends React.Component { //El componente de clase se llama contador y con EXTENDS va a agregar componentes de otra clas (reack.component)
+      constructor(props) { //ACA defino un constructor.
+        super(props); //Con el metodo super, me sirve para que herede de la clase React.Component, propiedades y metodos.
+        this.state = { // entre las cosas que heredo, puedo definir un estado dentro del contrusctor, el ESTADO SIEMPRE VA A SER UN OBJETO.
+          contador: this.props.numero, //este es el OBJETO, y es obligatorio hacer el this.state para crear el ESTADO.
+          nombre: 'fede'
+        }
+         this.onButtonClick = this.onButtonClick.bind(this);
+      }
+
+      onButtonClick(){
+        // console.log('this', this);
+        this.setState({ //=> esta es una funcion nativa. setState, es la unica forma de modificar el ESTADO..
+          contador: this.state.contador + 1, //entonces dentro del ESTADO de tu propiedad contador, sumale 1.
+           nombre: this.state.nombre + 'e'
+        });
+      }
+
+      // onButtonClick = () => {
+      //   console.log('this arrow', this)
+      //   this.setState({
+      //     contador: this.state.contador + 1
+      //   })
+      // }
+
+      render() {
+        return (
+          <div>
+            <button onClick={this.onButtonClick}>Suma uno!</button>
+            <p>Hola! van {this.state.contador}</p>
+            <p>Hola! {this.state.nombre}</p>
+          </div>
+        )
+      }
+    };
+
+    ReactDOM.render(<Contador numero={0} />, document.getElementById('app')); //aca le paso la prop.Numero {0}
+  </script>
+</body>
+
+</html>
